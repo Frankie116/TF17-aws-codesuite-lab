@@ -1,0 +1,20 @@
+# ---------------------------------------------------------------------------------------------------
+# version  2.0
+# Library: https://github.com/Frankie116/my-library.git
+# Creates iam roles
+# ---------------------------------------------------------------------------------------------------
+
+# req:
+# 08a-iamrole-ecs-te  - data.aws_iam_policy_document.my-iampd-ecs-task-exec.json
+# variables.tf        - var.my-ecs-task-execution-role-name
+
+
+resource "aws_iam_role" "my-iamrole-EC2RoleForCodeDeploy" {
+  name                = "my-iam-role"
+  assume_role_policy  = data.aws_iam_policy_document.my-iampd-EC2RoleForCodeDeploy.json
+}
+
+resource "aws_iam_role_policy_attachment" "my-iampa-EC2RoleForCodeDeploy" {
+  role                = aws_iam_role.my-iamrole-EC2RoleForCodeDeploy.name
+  policy_arn          = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
