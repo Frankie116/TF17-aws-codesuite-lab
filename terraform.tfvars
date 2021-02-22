@@ -4,9 +4,6 @@
 # user defined variables stored here.  Should be referenced in .gitignore so it isnt copied to github etc.
 # --------------------------------------------------------------------------------------------------------
 
-my-region-name          = "London"
-my-aws-region           = "eu-west-2"
-
 
 my-project-name         = "u22"
 my-environment          = "dev"

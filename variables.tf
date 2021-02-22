@@ -140,3 +140,7 @@ variable "my-public-key" {
     default = "ssh-rsa REDACTED-AAAABBBBBBCCCCCC"
 }
 
+# 08a-iamrole.tf ---------------------------------------------------------------------
+variable "my-iamrole-name" {
+    default = "EC2RoleForCodeDeploy"
+}

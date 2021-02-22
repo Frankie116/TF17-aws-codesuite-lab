@@ -30,6 +30,7 @@ resource "aws_instance" "my-server" {
   vpc_security_group_ids      = [aws_security_group.my-sg-server.id]
   key_name                    = var.my-private-key
   associate_public_ip_address = true
+  iam_instance_profile        = aws_iam_instance_profile.my-iam-instance-profile.name
   tags                        = {
     Name                      = "${var.my-instance-name}-dev-0${count.index+1}" 
     Project                   = var.my-project-name
@@ -46,6 +47,7 @@ resource "aws_instance" "my-server-public" {
   vpc_security_group_ids      = [aws_security_group.my-sg-server.id]
   key_name                    = var.my-private-key
   associate_public_ip_address = true
+  iam_instance_profile        = aws_iam_instance_profile.my-iam-instance-profile.name
   tags                        = {
     Name                      = "${var.my-instance-name}-prod-0${count.index+1}" 
     Project                   = var.my-project-name
