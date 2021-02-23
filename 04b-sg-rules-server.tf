@@ -10,7 +10,7 @@
 # variables.tf              - var.my-port-app1
 
 
-resource "aws_security_group_rule" "my-sg-irule-server1" {
+resource "aws_security_group_rule" "my-sg-server-irule1" {
   description               = "allow app1 port inbound"
   security_group_id         = aws_security_group.my-sg-server.id
   type                      = "ingress"
@@ -23,7 +23,7 @@ resource "aws_security_group_rule" "my-sg-irule-server1" {
 }
 
 
-resource "aws_security_group_rule" "my-sg-irule-server2" {
+resource "aws_security_group_rule" "my-sg-server-irule2" {
   description               = "allow only app1 port inbound from alb only"
   security_group_id         = aws_security_group.my-sg-server.id
   type                      = "ingress"
@@ -36,7 +36,7 @@ resource "aws_security_group_rule" "my-sg-irule-server2" {
 }
 
 
-resource "aws_security_group_rule" "my-sg-irule-server3" {
+resource "aws_security_group_rule" "my-sg-server-irule3" {
   description               = "allow only app1 port inbound from alb only"
   security_group_id         = aws_security_group.my-sg-server.id
   type                      = "ingress"
@@ -44,12 +44,11 @@ resource "aws_security_group_rule" "my-sg-irule-server3" {
   from_port                 = 443
   to_port                   = 443
   cidr_blocks             = ["0.0.0.0/0"]
-
   depends_on                = [aws_security_group.my-sg-server]
 }
 
 
-resource "aws_security_group_rule" "my-sg-erule-server1" {
+resource "aws_security_group_rule" "my-sg-server-erule1" {
   description               = "allow any port to exit server to anywhere"
   security_group_id         = aws_security_group.my-sg-server.id
   type                      = "egress"

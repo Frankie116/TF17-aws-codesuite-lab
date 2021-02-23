@@ -17,30 +17,49 @@
 
 
 locals {
-  instance-count              = var.my-instances-per-subnet * length(module.my-vpc.private_subnets)
-  instance-count-public       = var.my-instances-per-subnet * length(module.my-vpc.public_subnets)
+  instance-count-pri-dev      = 0
+  instance-count-pri-prod     = 0
+  instance-count-pub-dev      = 1
+  instance-count-pub-prod     = 1
 }
 
 
-resource "aws_instance" "my-server" {
-  count                       = local.instance-count
+resource "aws_instance" "my-server-pri-dev" {
+  count                       = local.instance-count-pri-dev
   ami                         = data.aws_ami.my-ami.id
   instance_type               = var.my-instance-type
   subnet_id                   = module.my-vpc.private_subnets[count.index % length(module.my-vpc.private_subnets)]
   vpc_security_group_ids      = [aws_security_group.my-sg-server.id]
   key_name                    = var.my-private-key
-  associate_public_ip_address = true
+  associate_public_ip_address = false
   iam_instance_profile        = aws_iam_instance_profile.my-iam-instance-profile.name
   tags                        = {
-    Name                      = "${var.my-instance-name}-dev-0${count.index+1}" 
+    Name                      = "${var.my-instance-name}-pri-dev-0${count.index+1}" 
     Project                   = var.my-project-name
     Environment               = "Development"
     Terraform                 = "true"
   }
 }
 
-resource "aws_instance" "my-server-public" {
-  count                       = local.instance-count-public
+resource "aws_instance" "my-server-pri-prod" {
+  count                       = local.instance-count-pri-prod
+  ami                         = data.aws_ami.my-ami.id
+  instance_type               = var.my-instance-type
+  subnet_id                   = module.my-vpc.private_subnets[count.index % length(module.my-vpc.private_subnets)]
+  vpc_security_group_ids      = [aws_security_group.my-sg-server.id]
+  key_name                    = var.my-private-key
+  associate_public_ip_address = false
+  iam_instance_profile        = aws_iam_instance_profile.my-iam-instance-profile.name
+  tags                        = {
+    Name                      = "${var.my-instance-name}-pri-prod-0${count.index+1}" 
+    Project                   = var.my-project-name
+    Environment               = "Production"
+    Terraform                 = "true"
+  }
+}
+
+resource "aws_instance" "my-server-pub-dev" {
+  count                       = local.instance-count-pub-dev
   ami                         = data.aws_ami.my-ami.id
   instance_type               = var.my-instance-type
   subnet_id                   = module.my-vpc.public_subnets[count.index % length(module.my-vpc.public_subnets)]
@@ -49,9 +68,27 @@ resource "aws_instance" "my-server-public" {
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.my-iam-instance-profile.name
   tags                        = {
-    Name                      = "${var.my-instance-name}-prod-0${count.index+1}" 
+    Name                      = "${var.my-instance-name}-pub-dev-0${count.index+1}" 
+    Project                   = var.my-project-name
+    Environment               = "Development"
+    Terraform                 = "true"
+  }
+}
+
+resource "aws_instance" "my-server-pub-prod" {
+  count                       = local.instance-count-pub-prod
+  ami                         = data.aws_ami.my-ami.id
+  instance_type               = var.my-instance-type
+  subnet_id                   = module.my-vpc.public_subnets[count.index % length(module.my-vpc.public_subnets)]
+  vpc_security_group_ids      = [aws_security_group.my-sg-server.id]
+  key_name                    = var.my-private-key
+  associate_public_ip_address = true
+  iam_instance_profile        = aws_iam_instance_profile.my-iam-instance-profile.name
+  tags                        = {
+    Name                      = "${var.my-instance-name}-pub-prod-0${count.index+1}" 
     Project                   = var.my-project-name
     Environment               = "Production"
     Terraform                 = "true"
   }
 }
+
